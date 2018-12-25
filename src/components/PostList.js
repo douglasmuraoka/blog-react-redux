@@ -6,6 +6,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { fetchPosts } from 'actions';
+import { Link } from 'react-router-dom';
 
 class PostList extends Component {
   componentWillMount() {
@@ -14,12 +15,19 @@ class PostList extends Component {
 
   renderPosts() {
     return this.props.posts.map(
-      ({id, userId, title, body}) => <li key={id}>{title} by User:{userId}. {body}</li>
+      ({id, userId, title, body}) =>
+        <li key={id}>
+          <h3>
+            <Link to={`/posts/${id}`}>{title}</Link>
+          </h3>
+          <p>by User:{userId}</p>
+          <p>{body}</p>
+        </li>
     );
   }
 
   render() {
-    return <div>{this.renderPosts()}</div>;
+    return <div><ul>{this.renderPosts()}</ul></div>;
   }
 }
 

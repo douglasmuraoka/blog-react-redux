@@ -5,6 +5,7 @@ import Main from 'components/Main';
 import App from 'components/App';
 import NotFound from 'components/NotFound';
 import PostDetail from 'components/PostDetail';
+import Root from 'components/Root';
 
 /**
  * Mounts the Main component wrapped in a MemoryRouter,
@@ -13,7 +14,7 @@ import PostDetail from 'components/PostDetail';
  * @param {!String} path The router path
  */
 const getWrappedMain = path => mount(
-  <MemoryRouter initialEntries={ [path] }><Main /></MemoryRouter>
+  <Root><MemoryRouter initialEntries={ [path] }><Main /></MemoryRouter></Root>
 );
 
 it('should render the App component on path "/"', () => {

@@ -3,5 +3,6 @@
  * with the post list.
  */
 import React from 'react';
+import PostList from 'components/PostList';
 
-export default () => <div>App</div>
+export default () => <div><PostList /></div>;

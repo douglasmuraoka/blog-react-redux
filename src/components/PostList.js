@@ -5,11 +5,16 @@
  */
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { fetchPosts } from 'actions';
 
 class PostList extends Component {
+  componentWillMount() {
+    this.props.fetchPosts();
+  }
+
   renderPosts() {
     return this.props.posts.map(
-      post => <li key={post}>{post}</li>
+      ({id, userId, title, body}) => <li key={id}>{title} by User:{userId}. {body}</li>
     );
   }
 
@@ -19,8 +24,7 @@ class PostList extends Component {
 }
 
 const mapStateToProps = ({ posts }) => {
-  console.log(posts);
   return ({ posts });
 }
 
-export default connect(mapStateToProps)(PostList);
+export default connect(mapStateToProps, { fetchPosts })(PostList);

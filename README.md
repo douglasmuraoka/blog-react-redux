@@ -1,5 +1,27 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+# Blog using React & Redux
+
+### On `/posts` view
+  - Display a list of 10 latest posts
+  - Every post should have short body preview limited by 100 chars
+  - Post title should be linked to the post details view
+  - Display "load more" button. Every click on this button should load 10 additional posts
+
+### On `/posts/:id` view:
+  - Display post details
+  - Show 3 latest comments under the post
+  - Display load button. Every click on this button should load 10 additional comments
+
+### General:
+  - Make sure you are displaying a loading state
+  - You can use state management
+  - Try to provide nice UX
+  - You are free to use a frontend framework like Bootstrap etc
+
+  - Optional: Allow to leave a comment for a post, with at least 5 chars
+  - Optional: instead of fake API, create your own API
+
 ## Available Scripts
 
 In the project directory, you can run:

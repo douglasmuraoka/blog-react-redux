@@ -13,3 +13,13 @@ export const fetchPosts = () => ({
   type: types.FETCH_POSTS,
   payload: axios.get(`${SERVER_URL}/posts`)
 });
+
+/**
+ * Fetches a post data by its id
+ * 
+ * @param {!String} id The post id
+ */
+export const fetchPost = id => ({
+  type: types.FETCH_POST,
+  payload: axios.get(`${SERVER_URL}/posts/${id}`)
+})

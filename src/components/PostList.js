@@ -14,8 +14,10 @@ class PostList extends Component {
   }
 
   renderPosts() {
-    return this.props.posts.map(
-      ({id, userId, title, body}) =>
+    const { posts } = this.props;
+    return Object.keys(posts).map(id => {
+      const { userId, title, body } = posts[id];
+      return (
         <li key={id}>
           <h3>
             <Link to={`/posts/${id}`}>{title}</Link>
@@ -23,7 +25,8 @@ class PostList extends Component {
           <p>by User:{userId}</p>
           <p className='post-preview'>{body.length > 100 ? `${body.substr(0, 100)}...` : body}</p>
         </li>
-    );
+      );
+    });
   }
 
   render() {

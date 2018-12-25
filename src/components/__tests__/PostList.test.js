@@ -37,3 +37,23 @@ it('should render a button that loads more posts', done => {
     done();
   });
 });
+
+it('should truncate post content greater than 100 characters', () => {
+  const bigStr = Array(150).fill('A').join('');
+  const initialState = {
+    posts: [{id: 1, userId: 1, title: 'Post #1', body: bigStr}]
+  };
+  const wrapped = mount(<Root initialState={initialState}><MemoryRouter><PostList /></MemoryRouter></Root>);
+  expect(wrapped.find('.post-preview').render().text()).toEqual(
+    `${Array(100).fill('A').join('')}...`
+  );
+});
+
+it('should fully render post content lesser than or equal to 100 characters', () => {
+  const bigStr = Array(100).fill('A').join('');
+  const initialState = {
+    posts: [{id: 1, userId: 1, title: 'Post #1', body: bigStr}]
+  };
+  const wrapped = mount(<Root initialState={initialState}><MemoryRouter><PostList /></MemoryRouter></Root>);
+  expect(wrapped.find('.post-preview').render().text()).toEqual(bigStr);
+});

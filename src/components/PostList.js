@@ -21,7 +21,7 @@ class PostList extends Component {
             <Link to={`/posts/${id}`}>{title}</Link>
           </h3>
           <p>by User:{userId}</p>
-          <p>{body}</p>
+          <p className='post-preview'>{body.length > 100 ? `${body.substr(0, 100)}...` : body}</p>
         </li>
     );
   }

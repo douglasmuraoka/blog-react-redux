@@ -20,6 +20,11 @@ it('should render the App component on path "/"', () => {
   expect(wrapped.find(App)).toHaveLength(1);
 })
 
+it('should render the App component on path "/posts"', () => {
+  const wrapped = getWrappedMain('/posts');
+  expect(wrapped.find(App)).toHaveLength(1);
+})
+
 it('should render the NotFound component on unknown path', () => {
   const wrapped = getWrappedMain('/foobar')
   expect(wrapped.find(NotFound)).toHaveLength(1);

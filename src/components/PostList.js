@@ -27,7 +27,12 @@ class PostList extends Component {
   }
 
   render() {
-    return <div><ul>{this.renderPosts()}</ul></div>;
+    return (
+      <div>
+        <ul>{this.renderPosts()}</ul>
+        <button onClick={this.props.fetchPosts}>Load more posts</button>
+      </div>
+    );
   }
 }
 

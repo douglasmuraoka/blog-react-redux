@@ -6,6 +6,10 @@ import moxios from 'moxios';
 
 let wrapped;
 
+afterEach(() => {
+  wrapped.unmount();
+})
+
 it('should render loading when post is not loaded', () => {
   wrapped = mount(<Root><PostDetail match={{ params: { id: 1 } }} /></Root>);
   expect(wrapped.render().text()).toContain('Loading ...');

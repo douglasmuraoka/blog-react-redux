@@ -5,6 +5,12 @@ import Root from 'components/Root';
 import { MemoryRouter } from 'react-router-dom';
 import moxios from 'moxios';
 
+let wrapped;
+
+afterEach(() => {
+  wrapped.unmount();
+})
+
 it('should render a li for each post', () => {
   const initialState = {
     posts: {
@@ -12,7 +18,7 @@ it('should render a li for each post', () => {
       2: { userId: 2, title: 'Post #2', body: 'bar'}
     }
   };
-  const wrapped = mount(<Root initialState={initialState}><MemoryRouter><PostList /></MemoryRouter></Root>);
+  wrapped = mount(<Root initialState={initialState}><MemoryRouter><PostList /></MemoryRouter></Root>);
   expect(wrapped.find('li')).toHaveLength(2);
 });
 
@@ -27,7 +33,7 @@ it('should render a button that loads more posts', done => {
     response: mockedResponse
   });
 
-  const wrapped = mount(<Root><MemoryRouter><PostList /></MemoryRouter></Root>);
+  wrapped = mount(<Root><MemoryRouter><PostList /></MemoryRouter></Root>);
   wrapped.find('button').simulate('click');
   moxios.wait(() => {
     wrapped.update();
@@ -43,7 +49,7 @@ it('should truncate post content greater than 100 characters', () => {
   const initialState = {
     posts: { 1: {userId: 1, title: 'Post #1', body: bigStr} }
   };
-  const wrapped = mount(<Root initialState={initialState}><MemoryRouter><PostList /></MemoryRouter></Root>);
+  wrapped = mount(<Root initialState={initialState}><MemoryRouter><PostList /></MemoryRouter></Root>);
   expect(wrapped.find('.post-preview').render().text()).toEqual(
     `${Array(100).fill('A').join('')}...`
   );
@@ -54,7 +60,7 @@ it('should fully render post content lesser than or equal to 100 characters', ()
   const initialState = {
     posts: { 1: {userId: 1, title: 'Post #1', body: bigStr} }
   };
-  const wrapped = mount(<Root initialState={initialState}><MemoryRouter><PostList /></MemoryRouter></Root>);
+  wrapped = mount(<Root initialState={initialState}><MemoryRouter><PostList /></MemoryRouter></Root>);
   expect(wrapped.find('.post-preview').render().text()).toEqual(bigStr);
 });
 
@@ -67,7 +73,7 @@ it('should fetch posts on mount', done => {
       {id: 2, userId: 2, title: 'Post #2', body: 'bar'}
     ]
   });
-  const wrapped = mount(<Root><MemoryRouter><PostList /></MemoryRouter></Root>);
+  wrapped = mount(<Root><MemoryRouter><PostList /></MemoryRouter></Root>);
   moxios.wait(() => {
     wrapped.update();
 

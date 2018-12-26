@@ -17,22 +17,28 @@ const getWrappedMain = path => mount(
   <Root><MemoryRouter initialEntries={ [path] }><Main /></MemoryRouter></Root>
 );
 
+let wrapped;
+
+afterEach(() => {
+  wrapped.unmount();
+})
+
 it('should render the App component on path "/"', () => {
-  const wrapped = getWrappedMain('/');
+  wrapped = getWrappedMain('/');
   expect(wrapped.find(App)).toHaveLength(1);
 })
 
 it('should render the App component on path "/posts"', () => {
-  const wrapped = getWrappedMain('/posts');
+  wrapped = getWrappedMain('/posts');
   expect(wrapped.find(App)).toHaveLength(1);
 })
 
 it('should render the PostDetail component on path "/posts/:id"', () => {
-  const wrapped = getWrappedMain('/posts/1');
+  wrapped = getWrappedMain('/posts/1');
   expect(wrapped.find(PostDetail)).toHaveLength(1);
 })
 
 it('should render the NotFound component on unknown path', () => {
-  const wrapped = getWrappedMain('/foobar')
+  wrapped = getWrappedMain('/foobar')
   expect(wrapped.find(NotFound)).toHaveLength(1);
 })

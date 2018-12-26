@@ -24,9 +24,9 @@ export default class CommentForm extends Component {
   render() {
     return (
       <form onSubmit={this.handleSubmit}>
-        <textarea name='body' onChange={e => this.setState({ body: e.target.value })} value={this.state.body}></textarea>
-        <input name='name' onChange={e => this.setState({ name: e.target.value })} value={this.state.name}></input>
-        <input name='email' type='email' onChange={e => this.setState({ email: e.target.value })} value={this.state.email}></input>
+        <textarea name='body' onChange={e => this.setState({ body: e.target.value })} value={this.state.body} required></textarea>
+        <input name='name' onChange={e => this.setState({ name: e.target.value })} value={this.state.name} required></input>
+        <input name='email' type='email' onChange={e => this.setState({ email: e.target.value })} value={this.state.email} required></input>
         <button>Add comment</button>
       </form>
     );

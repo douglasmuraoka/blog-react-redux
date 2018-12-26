@@ -5,7 +5,6 @@ export default (state = {}, action) => {
     case types.FETCH_COMMENTS:
       const postId = action.payload.postId;
       const newState = {...state};
-      console.log(action.payload);
       if (newState[postId]) {
         newState[postId] = [...newState[postId], ...action.payload.response.data];
       } else {

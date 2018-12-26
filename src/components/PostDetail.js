@@ -32,14 +32,17 @@ class PostDetail extends Component {
   }
   
   render() {
-    if (this.props.post) {
-      const { id, title, body, userId } = this.props.post;
+    const { post, match, fetchComments } = this.props;
+    if (post) {
+      const { id, title, body, userId } = post;
+      const { id: postId } = match.params;
       return (
         <div>
           <h1>{title}: ID {id}</h1>
           <h2>by {userId}</h2>
           <p>{body}</p>
           {this.renderComments()}
+          <button onClick={() => fetchComments(postId)}>Load more comments</button>
         </div>
       );
     } else {

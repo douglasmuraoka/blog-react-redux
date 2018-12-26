@@ -78,3 +78,33 @@ it('should fetch comments when store does not contains comments', done => {
     done();
   });
 });
+
+it('should render a button that loads more comments', done => {
+  moxios.install();
+  const mockedResponse = [
+    { postId: 1, id: 1, name: 'Comment #1', email: 'foo@foo.com', body: 'Content #1' },
+    { postId: 1, id: 2, name: 'Comment #2', email: 'bar@bar.com', body: 'Content #2' }
+  ];
+  moxios.stubRequest(/\/comments/g, {
+    status: 200,
+    response: mockedResponse
+  });
+
+  const initialState = {
+    posts: {
+      1: { userId: 1, title: 'bar', body: 'foo' }
+    },
+    comments: {
+      1: [{ id: 0, name: 'my comment', email: 'my@comment.com', body: 'lorem ipsum' }]
+    }
+  };
+  wrapped = mount(<Root initialState={initialState}><PostDetail match={{ params: { id: 1 } }} /></Root>);
+  wrapped.find('button').simulate('click');
+  moxios.wait(() => {
+    wrapped.update();
+
+    moxios.uninstall();
+    expect(wrapped.find('li')).toHaveLength(3);
+    done();
+  });
+});

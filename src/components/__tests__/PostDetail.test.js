@@ -40,3 +40,41 @@ it('should fetch post data when store does not contains posts', done => {
     done();
   });
 });
+
+it('should render comments', () => {
+  const initialState = {
+    posts: {
+      1: { userId: 1, title: 'bar', body: 'foo' }
+    },
+    comments: {
+      1: [{ id: 1, name: 'my comment', email: 'my@comment.com', body: 'lorem ipsum' }]
+    }
+  };
+  wrapped = mount(<Root initialState={initialState}><PostDetail match={{ params: { id: 1 } }} /></Root>);
+  const renderedContent = wrapped.render().text();
+  expect(renderedContent).toContain('my comment');
+  expect(renderedContent).toContain('lorem ipsum');
+});
+
+it('should fetch comments when store does not contains comments', done => {
+  moxios.install();
+  moxios.stubRequest(/\/comments/g, {
+    status: 200,
+    response: [{ postId: 1, id: 1, name: 'the comment name', email: 'myemail@foo.com', body: 'my comment' }]
+  });
+
+  const initialState = {
+    posts: {
+      1: { userId: 1, title: 'bar', body: 'foo' }
+    }
+  };
+  wrapped = mount(<Root initialState={initialState}><PostDetail match={{ params: { id: 1 } }} /></Root>);
+  moxios.wait(() => {
+    wrapped.update();
+    const renderedContent = wrapped.render().text();
+    expect(renderedContent).toContain('the comment name');
+    expect(renderedContent).toContain('my comment');
+    moxios.uninstall();
+    done();
+  });
+});

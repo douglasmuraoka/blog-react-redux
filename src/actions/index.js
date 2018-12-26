@@ -22,4 +22,21 @@ export const fetchPosts = () => ({
 export const fetchPost = id => ({
   type: types.FETCH_POST,
   payload: axios.get(`${SERVER_URL}/posts/${id}`)
+});
+
+/**
+ * Fetches the list of comments of a post
+ * 
+ * @param {!String} id The post id
+ */
+export const fetchComments = id => ({
+  type: types.FETCH_COMMENTS,
+  payload: new Promise((resolve, reject) => {
+    axios.get(`${SERVER_URL}/comments`, { data: { postId: id } }).then(response => {
+      resolve({
+        postId: id,
+        response
+      });
+    }).catch(reject);
+  })
 })

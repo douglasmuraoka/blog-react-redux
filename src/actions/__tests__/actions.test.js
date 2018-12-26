@@ -14,3 +14,10 @@ describe('fetchPost', () => {
     expect(action.type).toEqual(types.FETCH_POST);
   });
 });
+
+describe('fetchComments', () => {
+  it('should return an action of type FETCH_COMMENTS', () => {
+    const action = actions.fetchComments();
+    expect(action.type).toEqual(types.FETCH_COMMENTS);
+  });
+});

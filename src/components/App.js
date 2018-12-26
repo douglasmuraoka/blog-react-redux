@@ -4,5 +4,6 @@
  */
 import React from 'react';
 import PostList from 'components/PostList';
+import { REFRESH_POSTLIST_TIMEOUT } from 'settings';
 
-export default () => <div><PostList /></div>;
+export default () => <div><PostList refreshTimeout={REFRESH_POSTLIST_TIMEOUT} /></div>;

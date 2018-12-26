@@ -5,12 +5,26 @@
  */
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { fetchPosts } from 'actions';
+import { fetchPosts, clearPosts } from 'actions';
 import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
+
+// Last fetch date.
+// Needed to control when to force refreshing the post list.
+let lastFetch;
 
 class PostList extends Component {
   componentWillMount() {
-    this.props.fetchPosts();
+    // If posts is not defined or last fetch time is greater than 1 minute,
+    // fetches posts
+    if (!this.props.posts || !lastFetch) {
+      lastFetch = new Date();
+      this.props.fetchPosts();
+    } else if ((new Date() - lastFetch) > this.props.refreshTimeout) {
+      lastFetch = new Date();
+      this.props.clearPosts();
+      this.props.fetchPosts();
+    }
   }
 
   renderPosts() {
@@ -30,6 +44,9 @@ class PostList extends Component {
   }
 
   render() {
+    if (!this.props.posts) {
+      return <div>Loading Posts...</div>;
+    }
     return (
       <div>
         <ul>{this.renderPosts()}</ul>
@@ -43,4 +60,9 @@ const mapStateToProps = ({ posts }) => {
   return ({ posts });
 }
 
-export default connect(mapStateToProps, { fetchPosts })(PostList);
+PostList.propTypes = {
+  // Timeout to force a post list refresh
+  refreshTimeout: PropTypes.number
+}
+
+export default connect(mapStateToProps, { fetchPosts, clearPosts })(PostList);

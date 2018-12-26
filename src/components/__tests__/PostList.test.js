@@ -33,7 +33,10 @@ it('should render a button that loads more posts', done => {
     response: mockedResponse
   });
 
-  wrapped = mount(<Root><MemoryRouter><PostList /></MemoryRouter></Root>);
+  const initialState = {
+    posts: { 1: {userId: 1, title: 'Post #1', body: 'foo'} }
+  };
+  wrapped = mount(<Root initialState={initialState}><MemoryRouter><PostList /></MemoryRouter></Root>);
   wrapped.find('button').simulate('click');
   moxios.wait(() => {
     wrapped.update();
@@ -74,6 +77,35 @@ it('should fetch posts on mount', done => {
     ]
   });
   wrapped = mount(<Root><MemoryRouter><PostList /></MemoryRouter></Root>);
+  moxios.wait(() => {
+    wrapped.update();
+
+    moxios.uninstall();
+    expect(wrapped.find('li')).toHaveLength(2);
+    done();
+  });
+});
+
+it('should render a loading state when no post was fetched', () => {
+  wrapped = mount(<Root><MemoryRouter><PostList /></MemoryRouter></Root>);
+  expect(wrapped.render().text()).toContain('Loading Posts');
+});
+
+it('should refresh posts when it hits timeout', done => {
+  moxios.install();
+  moxios.stubRequest(/\/posts/g, {
+    status: 200,
+    response: [
+      {id: 1, userId: 1, title: 'Post #1', body: 'foo'},
+      {id: 2, userId: 2, title: 'Post #2', body: 'bar'}
+    ]
+  });
+  const initialState = {
+    posts: { 0: {userId: 0, title: 'Post #0', body: 'lorem' } }
+  };
+  wrapped = mount(<Root initialState={initialState}><MemoryRouter><PostList refreshTimeout={0} /></MemoryRouter></Root>);
+  expect(wrapped.render().text()).toContain('Loading Posts');
+
   moxios.wait(() => {
     wrapped.update();
 

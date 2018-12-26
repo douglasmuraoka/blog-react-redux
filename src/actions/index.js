@@ -39,4 +39,11 @@ export const fetchComments = id => ({
       });
     }).catch(reject);
   })
-})
+});
+
+/**
+ * Clears the post list
+ */
+export const clearPosts = () => ({
+  type: types.CLEAR_POSTS
+});

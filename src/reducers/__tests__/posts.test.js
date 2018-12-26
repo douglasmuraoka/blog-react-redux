@@ -3,7 +3,7 @@ import * as types from 'actions/types';
 
 it('should return state when action type is unknown', () => {
   const state = postsReducer(undefined, { type: 'foo', payload: 'bar'});
-  expect(state).toEqual({});
+  expect(state).toEqual(null);
 });
 
 it('should return state with posts when action type is FETCH_POSTS', () => {
@@ -54,4 +54,11 @@ it('should append state with posts when action type is FETCH_POST', () => {
     0: { userId: 0, title: 'Post #0', body: 'lorem' },
     3: { userId: 3, title: 'Post #3', body: 'foo' }
   });
+});
+
+it('should clear and posts when action type is CLEAR_POSTS', () => {
+  const state = postsReducer({
+    0: { userId: 0, title: 'Post #0', body: 'lorem' }
+  }, { type: types.CLEAR_POSTS });
+  expect(state).toEqual(null);
 });

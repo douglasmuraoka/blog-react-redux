@@ -1,6 +1,6 @@
 import * as types from 'actions/types';
 
-export default (state = {}, action) => {
+export default (state = null, action) => {
   switch(action.type) {
     case types.FETCH_POSTS:
       // Reduces the list of posts into an object, where
@@ -19,6 +19,8 @@ export default (state = {}, action) => {
       const newState = {...state};
       newState[id] = rest;
       return newState;
+    case types.CLEAR_POSTS:
+      return null;
     default:
       return state;
   }

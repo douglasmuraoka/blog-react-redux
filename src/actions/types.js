@@ -10,3 +10,7 @@ export const FETCH_POST = 'fetch_post';
 
 // Dispatched to fetch comments of a single post
 export const FETCH_COMMENTS = 'fetch_comments';
+
+// Dispatched when the posts are outdated and
+// needs to be cleared
+export const CLEAR_POSTS = 'clear_posts';

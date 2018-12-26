@@ -21,3 +21,10 @@ describe('fetchComments', () => {
     expect(action.type).toEqual(types.FETCH_COMMENTS);
   });
 });
+
+describe('clearPosts', () => {
+  it('should return an action of type CLEAR_POSTS', () => {
+    const action = actions.clearPosts();
+    expect(action.type).toEqual(types.CLEAR_POSTS);
+  });
+});

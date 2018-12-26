@@ -2,8 +2,9 @@ import React from 'react';
 import { mount } from 'enzyme';
 import PostList from 'components/PostList';
 import Root from 'components/Root';
-import { MemoryRouter } from 'react-router-dom';
+import { MemoryRouter, Link } from 'react-router-dom';
 import moxios from 'moxios';
+import Parallax from 'components/Parallax';
 
 let wrapped;
 
@@ -11,7 +12,7 @@ afterEach(() => {
   wrapped.unmount();
 })
 
-it('should render a li for each post', () => {
+it('should render a Parallax for each post', () => {
   const initialState = {
     posts: {
       1: { userId: 1, title: 'Post #1', body: 'foo'},
@@ -19,7 +20,7 @@ it('should render a li for each post', () => {
     }
   };
   wrapped = mount(<Root initialState={initialState}><MemoryRouter><PostList /></MemoryRouter></Root>);
-  expect(wrapped.find('li')).toHaveLength(2);
+  expect(wrapped.find(Parallax)).toHaveLength(2);
 });
 
 it('should render a button that loads more posts', done => {
@@ -42,7 +43,7 @@ it('should render a button that loads more posts', done => {
     wrapped.update();
 
     moxios.uninstall();
-    expect(wrapped.find('li')).toHaveLength(2);
+    expect(wrapped.find(Parallax)).toHaveLength(2);
     done();
   });
 });
@@ -81,7 +82,7 @@ it('should fetch posts on mount', done => {
     wrapped.update();
 
     moxios.uninstall();
-    expect(wrapped.find('li')).toHaveLength(2);
+    expect(wrapped.find(Parallax)).toHaveLength(2);
     done();
   });
 });
@@ -110,7 +111,37 @@ it('should refresh posts when it hits timeout', done => {
     wrapped.update();
 
     moxios.uninstall();
-    expect(wrapped.find('li')).toHaveLength(2);
+    expect(wrapped.find(Parallax)).toHaveLength(2);
     done();
   });
+});
+
+it('should render post title', () => {
+  const initialState = {
+    posts: {
+      1: { userId: 1, title: 'Post #1', body: 'foo'}
+    }
+  };
+  wrapped = mount(<Root initialState={initialState}><MemoryRouter><PostList /></MemoryRouter></Root>);
+  expect(wrapped.find('.post-title-container>.post-title').render().text()).toBe('Post #1');
+});
+
+it('should render post author id', () => {
+  const initialState = {
+    posts: {
+      1: { userId: 1, title: 'Post #1', body: 'foo'}
+    }
+  };
+  wrapped = mount(<Root initialState={initialState}><MemoryRouter><PostList /></MemoryRouter></Root>);
+  expect(wrapped.find('.post-author').render().text()).toBe('by User:1');
+});
+
+it('should render post content preview', () => {
+  const initialState = {
+    posts: {
+      1: { userId: 1, title: 'Post #1', body: 'foo'}
+    }
+  };
+  wrapped = mount(<Root initialState={initialState}><MemoryRouter><PostList /></MemoryRouter></Root>);
+  expect(wrapped.find('.post-preview').render().text()).toBe('foo');
 });

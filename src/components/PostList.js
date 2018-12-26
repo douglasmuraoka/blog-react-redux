@@ -8,6 +8,8 @@ import { connect } from 'react-redux';
 import { fetchPosts, clearPosts } from 'actions';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import style from 'styles/PostList.scss';
+import Parallax from 'components/Parallax';
 
 // Last fetch date.
 // Needed to control when to force refreshing the post list.
@@ -31,14 +33,21 @@ class PostList extends Component {
     const { posts } = this.props;
     return Object.keys(posts).map(id => {
       const { userId, title, body } = posts[id];
+
+      // FIXME: get image for each post
       return (
-        <li key={id}>
-          <h3>
-            <Link to={`/posts/${id}`}>{title}</Link>
-          </h3>
-          <p>by User:{userId}</p>
-          <p className='post-preview'>{body.length > 100 ? `${body.substr(0, 100)}...` : body}</p>
-        </li>
+        <Parallax key={id} className='post' imgSrc='https://materializecss.com/images/parallax1.jpg'>
+          <div className='post-title-container'>
+            <Link className='post-title' to={`/posts/${id}`}>{title}</Link>
+            <p className='post-author'>by User:{userId}</p>
+          </div>
+          <p className='post-preview-container'>
+            <span className='post-preview'>
+              {body.length > 100 ? `${body.substr(0, 100)}...` : body}
+            </span>
+          </p>
+          <Link className='post-read-more' to={`/posts/${id}`}>Read more</Link>
+        </Parallax>
       );
     });
   }
@@ -48,10 +57,10 @@ class PostList extends Component {
       return <div>Loading Posts...</div>;
     }
     return (
-      <div>
-        <ul>{this.renderPosts()}</ul>
+      <section className='container'>
+        <div className='postsContainer'>{this.renderPosts()}</div>
         <button onClick={this.props.fetchPosts}>Load more posts</button>
-      </div>
+      </section>
     );
   }
 }

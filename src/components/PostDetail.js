@@ -26,9 +26,12 @@ class PostDetail extends Component {
           <p>{body}</p>
         </li>
       );
-      return <ul>{commentsNodes}</ul>
+      if (commentsNodes.length) {
+        return <ul>{commentsNodes}</ul>;
+      }
+      return <div>No comments was found</div>;
     }
-    return null;
+    return <div>Loading comments...</div>;
   }
   
   render() {

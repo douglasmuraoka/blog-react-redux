@@ -112,3 +112,28 @@ it('should render a button that loads more comments', done => {
     done();
   });
 });
+
+it('should render the comments loading state', () => {
+  const initialState = {
+    posts: {
+      1: { userId: 1, title: 'bar', body: 'foo' }
+    }
+  };
+  wrapped = mount(<Root initialState={initialState}><PostDetail match={{ params: { id: 1 } }} /></Root>);
+  const renderedContent = wrapped.render().text();
+  expect(renderedContent).toContain('Loading comments');
+});
+
+it('should render the comments empty state', () => {
+  const initialState = {
+    posts: {
+      1: { userId: 1, title: 'bar', body: 'foo' }
+    },
+    comments: {
+      1: []
+    }
+  };
+  wrapped = mount(<Root initialState={initialState}><PostDetail match={{ params: { id: 1 } }} /></Root>);
+  const renderedContent = wrapped.render().text();
+  expect(renderedContent).toContain('No comments was found');
+});

@@ -4,7 +4,8 @@
  */
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { fetchPost, fetchComments } from 'actions';
+import { fetchPost, fetchComments, addComment } from 'actions';
+import CommentForm from 'components/CommentForm';
 
 class PostDetail extends Component {
   componentWillMount() {
@@ -46,6 +47,7 @@ class PostDetail extends Component {
           <p>{body}</p>
           {this.renderComments()}
           <button onClick={() => fetchComments(postId)}>Load more comments</button>
+          <CommentForm postId={postId} onSubmit={this.props.addComment} />
         </div>
       );
     } else {
@@ -61,4 +63,4 @@ const mapStateToProps = ({ posts, comments }, ownProps) => {
   };
 };
 
-export default connect(mapStateToProps, { fetchPost, fetchComments })(PostDetail);
+export default connect(mapStateToProps, { fetchPost, fetchComments, addComment })(PostDetail);

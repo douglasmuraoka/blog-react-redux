@@ -47,3 +47,16 @@ export const fetchComments = id => ({
 export const clearPosts = () => ({
   type: types.CLEAR_POSTS
 });
+
+/**
+ * Adds a comment to a post
+ * 
+ * @param {!String} comment.postId The Post id
+ * @param {!String} comment.body Comment content
+ * @param {!String} comment.name Comment title
+ * @param {!String} comment.email Comment author email
+ */
+export const addComment = comment => ({
+  type: types.ADD_COMMENT,
+  payload: axios.post(`${SERVER_URL}/comments`, comment)
+});

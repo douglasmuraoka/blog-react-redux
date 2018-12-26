@@ -28,3 +28,10 @@ describe('clearPosts', () => {
     expect(action.type).toEqual(types.CLEAR_POSTS);
   });
 });
+
+describe('addComment', () => {
+  it('should return an action of type ADD_COMMENT', () => {
+    const action = actions.addComment();
+    expect(action.type).toEqual(types.ADD_COMMENT);
+  });
+});

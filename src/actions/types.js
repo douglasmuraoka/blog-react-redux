@@ -14,3 +14,6 @@ export const FETCH_COMMENTS = 'fetch_comments';
 // Dispatched when the posts are outdated and
 // needs to be cleared
 export const CLEAR_POSTS = 'clear_posts';
+
+// Dispatched when a comment is added to a post
+export const ADD_COMMENT = 'add_comment';

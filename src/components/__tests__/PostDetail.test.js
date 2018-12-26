@@ -3,6 +3,7 @@ import PostDetail from 'components/PostDetail';
 import Root from 'components/Root';
 import { mount } from 'enzyme';
 import moxios from 'moxios';
+import CommentForm from 'components/CommentForm';
 
 let wrapped;
 
@@ -103,7 +104,7 @@ it('should render a button that loads more comments', done => {
     }
   };
   wrapped = mount(<Root initialState={initialState}><PostDetail match={{ params: { id: 1 } }} /></Root>);
-  wrapped.find('button').simulate('click');
+  wrapped.find('button').first().simulate('click');
   moxios.wait(() => {
     wrapped.update();
 
@@ -136,4 +137,17 @@ it('should render the comments empty state', () => {
   wrapped = mount(<Root initialState={initialState}><PostDetail match={{ params: { id: 1 } }} /></Root>);
   const renderedContent = wrapped.render().text();
   expect(renderedContent).toContain('No comments was found');
+});
+
+it('should render a CommentForm', () => {
+  const initialState = {
+    posts: {
+      1: { userId: 1, title: 'bar', body: 'foo' }
+    },
+    comments: {
+      1: [{ id: 0, name: 'my comment', email: 'my@comment.com', body: 'lorem ipsum' }]
+    }
+  };
+  wrapped = mount(<Root initialState={initialState}><PostDetail match={{ params: { id: 1 } }} /></Root>);
+  expect(wrapped.find(CommentForm)).toHaveLength(1);
 });

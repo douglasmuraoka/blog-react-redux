@@ -11,3 +11,5 @@ ReactDOM.render(
     </BrowserRouter>
   </Root>,
   document.getElementById('root'));
+
+document.getElementById('loading').remove();

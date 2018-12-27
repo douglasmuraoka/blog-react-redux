@@ -97,19 +97,27 @@ class PostDetail extends Component {
     const { comments, match } = this.props;
     const { id: postId } = match.params;
     if (comments && comments[postId]) {
-      let commentsNodes = comments[postId].reverse().map(({ id, name, body, author }) => 
-        <section className='comment z-depth-3' key={id}>
-          <div className='comment-author-container'>
-            <img className='comment-author-avatar z-depth-2' src={author.avatarUrl} alt='Comment author avatar' />
-            <div>
-              <h5>{name}</h5>
-              <span className='comment-author'>{author.name}</span>
-              <span className='comment-author comment-author-email'>{author.email}</span>
+      console.log(comments);
+      let commentsNodes = comments[postId].map(({ id, name, body, author }) => {
+        const commentsParagraphs = body.split('\n').map(content => (
+          <p>{content}</p>
+        ));
+        return (
+          <section className='comment z-depth-3' key={id}>
+            <div className='comment-author-container'>
+              <img className='comment-author-avatar z-depth-2' src={author.avatarUrl} alt='Comment author avatar' />
+              <div>
+                <h5>{name}</h5>
+                <span className='comment-author'>{author.name}</span>
+                <span className='comment-author comment-author-email'>{author.email}</span>
+              </div>
             </div>
-          </div>
-          <p>{body}</p>
-        </section>
-      );
+            <div className='comment-content'>
+              {commentsParagraphs}
+            </div>
+          </section>
+        );
+      });
       if (!commentsNodes.length) {
         commentsNodes = (
           <div>

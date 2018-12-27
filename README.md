@@ -6,17 +6,24 @@ This is a blog application using React & Redux. This is the client-side only. Th
 
 First of all, you are going to need `npm` installed. Check [here](https://www.npmjs.com/get-npm) to install. This application was tested on a Node 10 environment.
 
-After `npm` installed, build the bundle with:
+After `npm` installed, install the application dependencies and build the bundle with:
 
-```npm run build```.
+```
+npm i
+npm run build
+```
 
 To serve the bundled application, install `serve`. Check [here](https://www.npmjs.com/package/serve) to install, or simply run:
 
-```npm i -g serve```
+```
+npm i -g serve
+```
 
 Then serve the application:
 
-```serve -s bundle```
+```
+serve -s bundle
+```
 
 Read `serve` instructions on the terminal to get access to the application and have fun! :)
 
@@ -32,15 +39,7 @@ Read `serve` instructions on the terminal to get access to the application and h
   - Display post details
   - Show 3 latest comments under the post
   - Display load button. Every click on this button should load 10 additional comments
-
-### General:
-  - Make sure you are displaying a loading state
-  - You can use state management
-  - Try to provide nice UX
-  - You are free to use a frontend framework like Bootstrap etc
-
-  - Optional: Allow to leave a comment for a post, with at least 5 chars
-  - Optional: instead of fake API, create your own API
+  - You can leave a comment for a post, with at least 5 chars
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 

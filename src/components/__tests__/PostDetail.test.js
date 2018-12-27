@@ -4,6 +4,7 @@ import Root from 'components/Root';
 import { mount } from 'enzyme';
 import moxios from 'moxios';
 import CommentForm from 'components/CommentForm';
+import LoadingSpinner from 'components/LoadingSpinner';
 
 let wrapped;
 
@@ -19,7 +20,7 @@ it('should render loading when post is not loaded', () => {
 it('should render post details', () => {
   const initialState = {
     posts: {
-      1: { userId: 1, title: 'bar', body: 'foo' }
+      1: { author: { id: 1 }, title: 'bar', body: 'foo' }
     }
   };
   wrapped = mount(<Root initialState={initialState}><PostDetail match={{ params: { id: 1 } }} /></Root>);
@@ -32,7 +33,7 @@ it('should fetch post data when store does not contains posts', done => {
   moxios.install();
   moxios.stubRequest(/\/posts\/1/g, {
     status: 200,
-    response: { id: 1, userId: 1, body: 'post fetch', title: 'empty store' }
+    response: { id: 1, author: { id: 1 }, body: 'post fetch', title: 'empty store' }
   });
 
   wrapped = mount(<Root><PostDetail match={{ params: { id: 1 } }} /></Root>);
@@ -49,10 +50,10 @@ it('should fetch post data when store does not contains posts', done => {
 it('should render comments', () => {
   const initialState = {
     posts: {
-      1: { userId: 1, title: 'bar', body: 'foo' }
+      1: { id: 1, author: { id: 1 }, title: 'bar', body: 'foo' }
     },
     comments: {
-      1: [{ id: 1, name: 'my comment', email: 'my@comment.com', body: 'lorem ipsum' }]
+      1: [{ id: 1, name: 'my comment', author: { email: 'my@comment.com' }, body: 'lorem ipsum' }]
     }
   };
   wrapped = mount(<Root initialState={initialState}><PostDetail match={{ params: { id: 1 } }} /></Root>);
@@ -65,12 +66,12 @@ it('should fetch comments when store does not contains comments', done => {
   moxios.install();
   moxios.stubRequest(/\/comments/g, {
     status: 200,
-    response: [{ postId: 1, id: 1, name: 'the comment name', email: 'myemail@foo.com', body: 'my comment' }]
+    response: [{ postId: 1, id: 1, name: 'the comment name', author: { email: 'myemail@foo.com' }, body: 'my comment' }]
   });
 
   const initialState = {
     posts: {
-      1: { userId: 1, title: 'bar', body: 'foo' }
+      1: { id: 1, author: { id: 1 }, title: 'bar', body: 'foo' }
     }
   };
   wrapped = mount(<Root initialState={initialState}><PostDetail match={{ params: { id: 1 } }} /></Root>);
@@ -87,8 +88,8 @@ it('should fetch comments when store does not contains comments', done => {
 it('should render a button that loads more comments', done => {
   moxios.install();
   const mockedResponse = [
-    { postId: 1, id: 1, name: 'Comment #1', email: 'foo@foo.com', body: 'Content #1' },
-    { postId: 1, id: 2, name: 'Comment #2', email: 'bar@bar.com', body: 'Content #2' }
+    { postId: 1, id: 1, name: 'Comment #1', author: { email: 'foo@foo.com' }, body: 'Content #1' },
+    { postId: 1, id: 2, name: 'Comment #2', author: { email: 'bar@bar.com' }, body: 'Content #2' }
   ];
   moxios.stubRequest(/\/comments/g, {
     status: 200,
@@ -97,10 +98,10 @@ it('should render a button that loads more comments', done => {
 
   const initialState = {
     posts: {
-      1: { userId: 1, title: 'bar', body: 'foo' }
+      1: { author: { id: 1 }, title: 'bar', body: 'foo' }
     },
     comments: {
-      1: [{ id: 0, name: 'my comment', email: 'my@comment.com', body: 'lorem ipsum' }]
+      1: [{ id: 0, name: 'my comment', author: { email: 'my@comment.com' }, body: 'lorem ipsum' }]
     }
   };
   wrapped = mount(<Root initialState={initialState}><PostDetail match={{ params: { id: 1 } }} /></Root>);
@@ -117,17 +118,17 @@ it('should render a button that loads more comments', done => {
 it('should render the comments loading state', () => {
   const initialState = {
     posts: {
-      1: { userId: 1, title: 'bar', body: 'foo' }
+      1: { author: { id: 1 }, title: 'bar', body: 'foo' }
     }
   };
   wrapped = mount(<Root initialState={initialState}><PostDetail match={{ params: { id: 1 } }} /></Root>);
-  expect(wrapped.find('.comments-load-spinner-container')).toHaveLength(1);
+  expect(wrapped.find(LoadingSpinner)).toHaveLength(1);
 });
 
 it('should render the comments empty state', () => {
   const initialState = {
     posts: {
-      1: { userId: 1, title: 'bar', body: 'foo' }
+      1: { author: { id: 1 }, title: 'bar', body: 'foo' }
     },
     comments: {
       1: []
@@ -141,12 +142,41 @@ it('should render the comments empty state', () => {
 it('should render a CommentForm', () => {
   const initialState = {
     posts: {
-      1: { userId: 1, title: 'bar', body: 'foo' }
+      1: { author: { id: 1 }, title: 'bar', body: 'foo' }
     },
     comments: {
-      1: [{ id: 0, name: 'my comment', email: 'my@comment.com', body: 'lorem ipsum' }]
+      1: [{ id: 0, name: 'my comment', author: { email: 'my@comment.com' }, body: 'lorem ipsum' }]
     }
   };
   wrapped = mount(<Root initialState={initialState}><PostDetail match={{ params: { id: 1 } }} /></Root>);
   expect(wrapped.find(CommentForm)).toHaveLength(1);
+});
+
+it('should render a loading spinner when loading more comments', done => {
+  moxios.install();
+  moxios.stubRequest(/\/comments/g, {
+    status: 200,
+    response: []
+  });
+
+  const initialState = {
+    posts: {
+      1: { id: 1, author: { id: 1 }, title: 'Post #1', body: 'foo'}
+    },
+    comments: {
+      1: []
+    }
+  };
+  wrapped = mount(<Root initialState={initialState}><PostDetail match={{ params: { id: 1 }}} /></Root>);
+  wrapped.find('.post-detail-load-button-container>Button').simulate('click');
+  wrapped.update();
+  expect(wrapped.find(LoadingSpinner)).toHaveLength(1);
+
+  moxios.wait(() => {
+    wrapped.update();
+
+    moxios.uninstall();
+    expect(wrapped.find(LoadingSpinner)).toHaveLength(0);
+    done();
+  });
 });

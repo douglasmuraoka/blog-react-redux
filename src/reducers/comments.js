@@ -16,7 +16,7 @@ export default (state = {}, action) => {
       postId = comment.postId;
       newState = {...state};
       if (newState[postId]) {
-        newState[postId] = [...newState[postId], comment];
+        newState[postId] = [comment, ...newState[postId]];
       } else {
         newState[postId] = [comment];
       }

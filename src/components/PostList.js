@@ -9,6 +9,8 @@ import { fetchPosts, clearPosts } from 'actions';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Parallax from 'components/Parallax';
+import Button from 'components/Button';
+import LoadingSpinner from 'components/LoadingSpinner';
 // eslint-disable-next-line
 import style from 'styles/PostList.scss';
 
@@ -16,7 +18,16 @@ import style from 'styles/PostList.scss';
 // Needed to control when to force refreshing the post list.
 let lastFetch;
 
+// The oldest post date.
+// Needed when fetching older posts when the user clicks the
+// "load more posts" button.
+let oldestPostDate;
+
 class PostList extends Component {
+  state = {
+    isLoadingPosts: false
+  };
+
   componentWillMount() {
     // If posts is not defined or last fetch time is greater than 1 minute,
     // fetches posts
@@ -30,10 +41,26 @@ class PostList extends Component {
     }
   }
 
+  componentWillReceiveProps() {
+    if (this.state.isLoadingPosts) {
+      this.setState({
+        isLoadingPosts: false
+      });
+    }
+  }
+
   renderPosts() {
-    const { posts } = this.props;
-    return Object.keys(posts).map(id => {
-      const { author, title, body } = posts[id];
+    let { posts } = this.props;
+    posts = Object.values(posts);
+
+    // Orders posts by creation date, descendent
+    posts.sort((a, b) => {
+      return a.createdAt > b.createdAt ? -1 : 1;
+    });
+    oldestPostDate = posts[posts.length - 1].createdAt;
+
+    return posts.map(post => {
+      const { id, author, title, body } = post;
 
       // FIXME: get image for each post
       return (
@@ -81,6 +108,18 @@ class PostList extends Component {
     ));
   }
 
+  renderLoadMorePostsButton = () => {
+    if (this.state.isLoadingPosts) {
+      return <LoadingSpinner />
+    }
+    const loadPosts = () => {
+      this.props.fetchPosts(oldestPostDate);
+      this.setState({ isLoadingPosts: true });
+    };
+    return <Button className='waves-effect waves-light' label='Load more posts' icon='expand_more'
+      onClick={loadPosts} />;
+  }
+
   render() {
     if (!this.props.posts) {
       return (
@@ -94,7 +133,9 @@ class PostList extends Component {
     return (
       <section className='container'>
         <div className='postsContainer'>{this.renderPosts()}</div>
-        <button onClick={this.props.fetchPosts}>Load more posts</button>
+        <div className='post-list-load-more-container'>
+          {this.renderLoadMorePostsButton()}
+        </div>
       </section>
     );
   }

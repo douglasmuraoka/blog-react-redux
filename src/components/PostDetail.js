@@ -7,10 +7,20 @@ import { connect } from 'react-redux';
 import { fetchPost, fetchComments, addComment } from 'actions';
 import CommentForm from 'components/CommentForm';
 import Button from 'components/Button';
+import LoadingSpinner from 'components/LoadingSpinner';
 // eslint-disable-next-line
 import style from 'styles/PostDetail.scss';
 
+// The oldest comment date.
+// Needed when fetching older comments when the user clicks the
+// "load more comments" button.
+let oldestCommentDate;
+
 class PostDetail extends Component {
+  state = {
+    isLoadingComments: false
+  };
+
   componentWillMount() {
     const postId = this.props.match.params.id;
     if (!this.props.post) {
@@ -18,6 +28,12 @@ class PostDetail extends Component {
     }
     if (!this.props.comments || !this.props.comments[postId]) {
       this.props.fetchComments(postId);
+    }
+  }
+
+  componentWillReceiveProps() {
+    if (this.state.isLoadingComments) {
+      this.setState({ isLoadingComments: false });
     }
   }
 
@@ -73,23 +89,17 @@ class PostDetail extends Component {
     );
   }
 
-  renderCommentsLoadingSpinner() {
+  renderLoadMorePostsButton = () => {
+    if (this.state.isLoadingComments) {
+      return <LoadingSpinner />;
+    }
+    const loadComments = () => {
+      this.props.fetchComments(this.props.match.params.id, oldestCommentDate);
+      this.setState({ isLoadingComments: true });
+    };
     return (
-      <div className='comments-load-spinner-container'>
-        <div className="preloader-wrapper big active">
-          <div className="spinner-layer">
-            <div className="circle-clipper left">
-              <div className="circle"></div>
-            </div>
-            <div className="gap-patch">
-              <div className="circle"></div>
-            </div>
-            <div className="circle-clipper right">
-              <div className="circle"></div>
-            </div>
-          </div>
-        </div>
-      </div>
+      <Button className='waves-effect waves-light' label='Load more comments'
+        icon='expand_more' onClick={loadComments} />
     );
   }
 
@@ -97,10 +107,9 @@ class PostDetail extends Component {
     const { comments, match } = this.props;
     const { id: postId } = match.params;
     if (comments && comments[postId]) {
-      console.log(comments);
       let commentsNodes = comments[postId].map(({ id, name, body, author }) => {
-        const commentsParagraphs = body.split('\n').map(content => (
-          <p>{content}</p>
+        const commentsParagraphs = body.split('\n').map((content, i) => (
+          <p key={i}>{content}</p>
         ));
         return (
           <section className='comment z-depth-3' key={id}>
@@ -124,8 +133,10 @@ class PostDetail extends Component {
             <h5 className='comments-not-found'>No comments yet</h5>
           </div>
         );
+      } else {
+        oldestCommentDate = comments[postId][comments[postId].length - 1].createdAt;
       }
-      const { addComment, fetchComments } = this.props;
+      const { addComment } = this.props;
       // Renders the comment form, as well as the
       // button to fetch more comments
       return (
@@ -136,21 +147,20 @@ class PostDetail extends Component {
           </section>
           <div className="divider"></div>
           <div className='post-detail-load-button-container'>
-            <Button className='waves-effect waves-light' label='Load more comments' icon='expand_more'
-              onClick={() => fetchComments(postId)} />
+            {this.renderLoadMorePostsButton()}
           </div>
         </div>
       );
     }
-    return this.renderCommentsLoadingSpinner();
+    return <LoadingSpinner />;
   }
   
   render() {
     const { post } = this.props;
     if (post) {
       const { title, body, author } = post;
-      const contentParagraphs = body.split('\n').map(paragraph => (
-        <p className='post-content flow-text'>{paragraph}</p>
+      const contentParagraphs = body.split('\n').map((paragraph, i) => (
+        <p key={i} className='post-content flow-text'>{paragraph}</p>
       ));
       return (
         <section className='post-detail container'>

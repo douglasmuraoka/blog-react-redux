@@ -54,7 +54,7 @@ class PostList extends Component {
   }
 
   renderMockPosts() {
-    return Array(3).fill('').map((_, index) => (
+    return Array(4).fill('').map((_, index) => (
       <div className='post-mock z-depth-3' key={index}>
         <div className="progress">
           <div className="indeterminate"></div>

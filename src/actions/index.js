@@ -49,7 +49,7 @@ export const fetchPost = id => ({
  * creation date fetched.
  */
 export const fetchComments = (id, createdAtMaxValue) => {
-  let query = `postId=${id}&_sort=createdAt&_order=desc&_limit=3`;
+  let query = `postId=${id}&_sort=createdAt&_order=desc`;
   
   if (createdAtMaxValue) {
     const createdAtMaxDate = new Date(createdAtMaxValue);
@@ -58,7 +58,9 @@ export const fetchComments = (id, createdAtMaxValue) => {
     // the oldest post won't be fetched again.
     // json-server queries doesn't accepts the "lt" operator :(
     const createdAtConstraint = new Date(createdAtMaxDate - 1).toISOString();
-    query += `&createdAt_lte=${createdAtConstraint}`;
+    query += `&createdAt_lte=${createdAtConstraint}&_limit=10`;
+  } else {
+    query += '&_limit=3';
   }
   return {
     type: types.FETCH_COMMENTS,

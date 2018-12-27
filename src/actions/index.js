@@ -4,7 +4,7 @@
 import axios from 'axios';
 import * as types from 'actions/types';
 
-const SERVER_URL = 'http://jsonplaceholder.typicode.com';
+const SERVER_URL = 'http://localhost:5000';
 
 /**
  * Fetches posts data from the server

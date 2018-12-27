@@ -97,12 +97,18 @@ class PostDetail extends Component {
     const { comments, match } = this.props;
     const { id: postId } = match.params;
     if (comments && comments[postId]) {
-      let commentsNodes = comments[postId].reverse().map(({ id, name, body, email }) => 
-        <div className='comment z-depth-3' key={id}>
-          <h5>{name}</h5>
-          <span className='comment-email'>{email}</span>
+      let commentsNodes = comments[postId].reverse().map(({ id, name, body, author }) => 
+        <section className='comment z-depth-3' key={id}>
+          <div className='comment-author-container'>
+            <img className='comment-author-avatar z-depth-2' src={author.avatarUrl} alt='Comment author avatar' />
+            <div>
+              <h5>{name}</h5>
+              <span className='comment-author'>{author.name}</span>
+              <span className='comment-author comment-author-email'>{author.email}</span>
+            </div>
+          </div>
           <p>{body}</p>
-        </div>
+        </section>
       );
       if (!commentsNodes.length) {
         commentsNodes = (
@@ -134,12 +140,21 @@ class PostDetail extends Component {
   render() {
     const { post } = this.props;
     if (post) {
-      const { title, body, userId } = post;
+      const { title, body, author } = post;
+      const contentParagraphs = body.split('\n').map(paragraph => (
+        <p className='post-content flow-text'>{paragraph}</p>
+      ));
       return (
         <section className='post-detail container'>
           <h1 className='post-detail-title'>{title}</h1>
-          <p className='flow-text'>{userId}</p>
-          <p className='post-content flow-text'>{body}</p>
+          <div className='post-detail-author'>
+            <img className='z-depth-2' src={author.avatarUrl} alt={`${author.name}'s avatar (post author)`} />
+            <div>
+              <p className='post-detail-author-name'>{author.name}</p>
+              <p className='post-detail-author-email'>{author.email}</p>
+            </div>
+          </div>
+          {contentParagraphs}
           <div className="divider"></div>
           {this.renderComments()}
         </section>

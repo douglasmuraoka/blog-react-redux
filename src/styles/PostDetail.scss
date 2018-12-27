@@ -8,6 +8,35 @@
     margin: 50px auto 0 auto;
   }
 
+  .post-detail-author {
+    font-size: 1.3rem;
+    font-weight: 100;
+    max-width: 85%;
+    margin: 35px auto 50px auto;
+    display: flex;
+    align-items: center;
+
+    img {
+      border-radius: 50%;
+      height: 70px;
+    }
+
+    div {
+      margin-left: 10px;
+      p {
+        margin: 0;
+      }
+    }
+
+    .post-detail-author-name {
+      font-size: 1.5rem;
+    }
+
+    .post-detail-author-email {
+      font-size: 1rem;
+    }
+  }
+
   .post-content {
     margin-top: 20px;
   }
@@ -23,13 +52,26 @@
       margin-top: 15px;
       font-weight: 100;
 
-      h5 {
-        margin-bottom: 0;
-      }
+      .comment-author-container {
+        display: flex;
+        align-items: center;
+        margin-top: 10px;
 
-      .comment-email {
-        text-transform: lowercase;
-        font-size: 1rem;
+        .comment-author-avatar {
+          border-radius: 50%;
+          margin-right: 10px;
+        }
+        
+        h5 {
+          margin: 0;
+        }
+
+        .comment-author {
+          font-size: 1rem;
+          &.comment-author-email {
+            margin-left: 10px;
+          }
+        }
       }
     }
 

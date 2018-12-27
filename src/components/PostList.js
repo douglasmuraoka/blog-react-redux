@@ -33,14 +33,14 @@ class PostList extends Component {
   renderPosts() {
     const { posts } = this.props;
     return Object.keys(posts).map(id => {
-      const { userId, title, body } = posts[id];
+      const { author, title, body } = posts[id];
 
       // FIXME: get image for each post
       return (
         <Parallax key={id} className='post' imgSrc='https://materializecss.com/images/parallax1.jpg'>
           <div className='post-title-container'>
             <Link className='post-title' to={`/posts/${id}`}>{title}</Link>
-            <p className='post-author'>by User:{userId}</p>
+            <p className='post-author'>by {author.name}</p>
           </div>
           <p className='post-preview-container'>
             <span className='post-preview'>

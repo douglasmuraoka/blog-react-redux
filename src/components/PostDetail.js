@@ -6,6 +6,9 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { fetchPost, fetchComments, addComment } from 'actions';
 import CommentForm from 'components/CommentForm';
+import Button from 'components/Button';
+// eslint-disable-next-line
+import style from 'styles/PostDetail.scss';
 
 class PostDetail extends Component {
   componentWillMount() {
@@ -20,15 +23,30 @@ class PostDetail extends Component {
 
   renderComments() {
     const { comments, match } = this.props;
-    if (comments && comments[match.params.id]) {
-      const commentsNodes = comments[match.params.id].map(({ id, name, body }) => 
-        <li key={id}>
-          <h3>{name}</h3>
+    const { id: postId } = match.params;
+    if (comments && comments[postId]) {
+      const commentsNodes = comments[postId].reverse().map(({ id, name, body, email }) => 
+        <div className='comment z-depth-3' key={id}>
+          <h5>{name}</h5>
+          <span className='comment-email'>{email}</span>
           <p>{body}</p>
-        </li>
+        </div>
       );
       if (commentsNodes.length) {
-        return <ul>{commentsNodes}</ul>;
+        const { addComment, fetchComments } = this.props;
+        return (
+          <div>
+            <section className='post-detail-comments'>
+              <CommentForm postId={postId} onSubmit={addComment} />
+              {commentsNodes}
+            </section>
+            <div className="divider"></div>
+            <div className='post-detail-load-button-container'>
+              <Button className='waves-effect waves-light' label='Load more comments' icon='expand_more'
+                onClick={() => fetchComments(postId)} />
+            </div>
+          </div>
+        );
       }
       return <div>No comments was found</div>;
     }
@@ -36,19 +54,17 @@ class PostDetail extends Component {
   }
   
   render() {
-    const { post, match, fetchComments } = this.props;
+    const { post } = this.props;
     if (post) {
-      const { id, title, body, userId } = post;
-      const { id: postId } = match.params;
+      const { title, body, userId } = post;
       return (
-        <div>
-          <h1>{title}: ID {id}</h1>
-          <h2>by {userId}</h2>
-          <p>{body}</p>
+        <section className='post-detail container'>
+          <h1>{title}</h1>
+          <p className='flow-text'>{userId}</p>
+          <p className='post-content flow-text'>{body}</p>
+          <div className="divider"></div>
           {this.renderComments()}
-          <button onClick={() => fetchComments(postId)}>Load more comments</button>
-          <CommentForm postId={postId} onSubmit={this.props.addComment} />
-        </div>
+        </section>
       );
     } else {
       return <div>Loading ...</div>

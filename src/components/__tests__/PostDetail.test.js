@@ -104,12 +104,12 @@ it('should render a button that loads more comments', done => {
     }
   };
   wrapped = mount(<Root initialState={initialState}><PostDetail match={{ params: { id: 1 } }} /></Root>);
-  wrapped.find('button').first().simulate('click');
+  wrapped.find('.post-detail-load-button-container>Button').simulate('click');
   moxios.wait(() => {
     wrapped.update();
 
     moxios.uninstall();
-    expect(wrapped.find('li')).toHaveLength(3);
+    expect(wrapped.find('.comment')).toHaveLength(3);
     done();
   });
 });

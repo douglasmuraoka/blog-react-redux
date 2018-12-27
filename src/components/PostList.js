@@ -8,8 +8,9 @@ import { connect } from 'react-redux';
 import { fetchPosts, clearPosts } from 'actions';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import style from 'styles/PostList.scss';
 import Parallax from 'components/Parallax';
+// eslint-disable-next-line
+import style from 'styles/PostList.scss';
 
 // Last fetch date.
 // Needed to control when to force refreshing the post list.

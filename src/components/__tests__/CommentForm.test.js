@@ -19,25 +19,25 @@ it('has a form', () => {
 });
 
 it('has a body field', () => {
-  expect(wrapped.find('textarea[name="body"]')).toHaveLength(1);
+  expect(wrapped.find('CommentFormField[name="body"]')).toHaveLength(1);
 });
 
 it('has a button', () => {
-  expect(wrapped.find('button')).toHaveLength(1);
+  expect(wrapped.find('form>Button[type="submit"]')).toHaveLength(1);
 });
 
 it('has a name field', () => {
-  expect(wrapped.find('input[name="name"]')).toHaveLength(1);
+  expect(wrapped.find('CommentFormField[name="name"]')).toHaveLength(1);
 });
 
 it('has an email field', () => {
-  expect(wrapped.find('input[name="email"][type="email"]')).toHaveLength(1);
+  expect(wrapped.find('CommentFormField[name="email"][type="email"]')).toHaveLength(1);
 });
 
 it('submits postId, name, email and body', () => {
-  wrapped.find('textarea[name="body"]').simulate('change', { target: { value: 'Comment content' } });
-  wrapped.find('input[name="name"]').simulate('change', { target: { value: 'Name' } });
-  wrapped.find('input[name="email"][type="email"]').simulate('change', { target: { value: 'foo@bar.com' } });
+  wrapped.find('CommentFormField[name="body"]').simulate('change', { target: { value: 'Comment content' } });
+  wrapped.find('CommentFormField[name="name"]').simulate('change', { target: { value: 'Name' } });
+  wrapped.find('CommentFormField[name="email"][type="email"]').simulate('change', { target: { value: 'foo@bar.com' } });
   wrapped.update();
   const preventDefault = jest.fn();
   wrapped.find('form').simulate('submit', { preventDefault });

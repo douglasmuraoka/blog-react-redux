@@ -17,15 +17,32 @@ export default class CommentForm extends Component {
 
   handleSubmit = e => {
     e.preventDefault();
-    this.props.onSubmit({ ...this.state, postId: this.props.postId });
-    this.setState({
-      body: '',
-      name: '',
-      email: ''
-    });
+    if (this.state.body.length >= 5) {
+      this.props.onSubmit({ ...this.state, postId: this.props.postId });
+      this.setState({
+        body: '',
+        name: '',
+        email: ''
+      });
+    }
   }
 
   render() {
+    const bodyChangeHandler = ({ target }) => {
+      const { value, classList } = target;
+      this.setState({ body: value });
+      if (value.length < 5) {
+        target.setCustomValidity('Comment should have at least 5 characters');
+        if (Array.from(classList).indexOf('valid') !== -1) {
+          classList.replace('valid', 'invalid');
+        } else {
+          classList.add('invalid');
+        }
+      } else {
+        target.setCustomValidity('');
+        classList.replace('invalid', 'valid');
+      }
+    };
     return (
       <div className="comment-form-container z-depth-3">
         <h5>Leave your comment</h5>
@@ -37,7 +54,7 @@ export default class CommentForm extends Component {
             onChange={e => this.setState({ name: e.target.value })}
             value={this.state.name} />
           <CommentFormField id='comment-input' name='body' label='Comment'
-            onChange={e => this.setState({ body: e.target.value })}
+            onChange={bodyChangeHandler}
             value={this.state.body} type='textarea' />
           <Button className='waves-effect waves-light' type='submit' label='Add comment' icon='send' />
         </form>

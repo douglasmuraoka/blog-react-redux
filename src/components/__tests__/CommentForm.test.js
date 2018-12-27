@@ -35,7 +35,13 @@ it('has an email field', () => {
 });
 
 it('submits postId, name, email and body', () => {
-  wrapped.find('CommentFormField[name="body"]').simulate('change', { target: { value: 'Comment content' } });
+  wrapped.find('CommentFormField[name="body"]').simulate('change', {
+    target: {
+      value: 'Comment content',
+      classList: { replace: jest.fn() },
+      setCustomValidity: jest.fn()
+    }
+  });
   wrapped.find('CommentFormField[name="name"]').simulate('change', { target: { value: 'Name' } });
   wrapped.find('CommentFormField[name="email"][type="email"]').simulate('change', { target: { value: 'foo@bar.com' } });
   wrapped.update();

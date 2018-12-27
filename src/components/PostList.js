@@ -53,9 +53,43 @@ class PostList extends Component {
     });
   }
 
+  renderMockPosts() {
+    return Array(3).fill('').map((_, index) => (
+      <div className='post-mock z-depth-3' key={index}>
+        <div className="progress">
+          <div className="indeterminate"></div>
+        </div>
+        <div className="progress">
+          <div className="indeterminate"></div>
+        </div>
+        <div className="progress">
+          <div className="indeterminate"></div>
+        </div>
+        <div className="progress">
+          <div className="indeterminate"></div>
+        </div>
+        <div className="progress">
+          <div className="indeterminate"></div>
+        </div>
+        <div className="progress">
+          <div className="indeterminate"></div>
+        </div>
+        <div className="progress">
+          <div className="indeterminate"></div>
+        </div>
+      </div>
+    ));
+  }
+
   render() {
     if (!this.props.posts) {
-      return <div>Loading Posts...</div>;
+      return (
+        <section className='container'>
+          <div className='postsContainer'>
+            {this.renderMockPosts()}
+          </div>
+        </section>
+      );
     }
     return (
       <section className='container'>

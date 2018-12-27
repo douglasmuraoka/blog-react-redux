@@ -51,6 +51,50 @@
   }
 }
 
+.post-mock {
+  background-color: rgba(0,0,0,0.7);
+  height: 380px;
+  border-radius: 10px;
+  margin-top: 15px;
+  padding: 20px;
+
+  .progress {
+    height: 20px;
+    background-color: #fffebd;
+    margin: 15px 0 15px;
+
+    &:first-child {
+      max-width: 90%;
+    }
+    &:nth-child(2) {
+      max-width: 70%;
+    }
+    &:nth-child(3) {
+      max-width: 60%;
+    }
+    &:nth-child(4) {
+      max-width: 55%;
+    }
+    &:nth-child(5) {
+      margin: 50px 0 50px;
+      max-width: 20%;
+    }
+    &:nth-child(6) {
+      max-width: 65%;
+    }
+    &:nth-child(7) {
+      max-width: 80%;
+    }
+    &:nth-child(8) {
+      max-width: 40%;
+    }
+
+    .indeterminate {
+      background-color: #c1bf9c;
+    }
+  }
+}
+
 @media screen and (min-width: 601px) {
   .post {
     .post-title-container {

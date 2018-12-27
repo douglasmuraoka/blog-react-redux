@@ -89,7 +89,7 @@ it('should fetch posts on mount', done => {
 
 it('should render a loading state when no post was fetched', () => {
   wrapped = mount(<Root><MemoryRouter><PostList /></MemoryRouter></Root>);
-  expect(wrapped.render().text()).toContain('Loading Posts');
+  expect(wrapped.find('.post-mock')).toHaveLength(3);
 });
 
 it('should refresh posts when it hits timeout', done => {
@@ -105,7 +105,7 @@ it('should refresh posts when it hits timeout', done => {
     posts: { 0: {userId: 0, title: 'Post #0', body: 'lorem' } }
   };
   wrapped = mount(<Root initialState={initialState}><MemoryRouter><PostList refreshTimeout={0} /></MemoryRouter></Root>);
-  expect(wrapped.render().text()).toContain('Loading Posts');
+  expect(wrapped.find('.post-mock')).toHaveLength(3);
 
   moxios.wait(() => {
     wrapped.update();

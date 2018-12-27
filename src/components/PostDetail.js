@@ -21,36 +21,114 @@ class PostDetail extends Component {
     }
   }
 
+  renderPostDetailsMock() {
+    return (
+      <section className='post-detail container'>
+        <div className='post-detail-mock'>
+          <div className='post-detail-title'>
+            <div className="progress">
+              <div className="indeterminate"></div>
+            </div>
+            <div className="progress">
+              <div className="indeterminate"></div>
+            </div>
+            <div className="progress">
+              <div className="indeterminate"></div>
+            </div>
+            <div className="progress">
+              <div className="indeterminate"></div>
+            </div>
+          </div>
+          <div className='post-content'>
+            <div className="progress">
+              <div className="indeterminate"></div>
+            </div>
+            <div className="progress">
+              <div className="indeterminate"></div>
+            </div>
+            <div className="progress">
+              <div className="indeterminate"></div>
+            </div>
+            <div className="progress">
+              <div className="indeterminate"></div>
+            </div>
+          </div>
+          <div className="divider"></div>
+          <div className='comments-mock z-depth-3'>
+            <div className="progress">
+              <div className="indeterminate"></div>
+            </div>
+            <div className="progress">
+              <div className="indeterminate"></div>
+            </div>
+            <div className="progress">
+              <div className="indeterminate"></div>
+            </div>
+            <div className="progress">
+              <div className="indeterminate"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  renderCommentsLoadingSpinner() {
+    return (
+      <div className='comments-load-spinner-container'>
+        <div className="preloader-wrapper big active">
+          <div className="spinner-layer">
+            <div className="circle-clipper left">
+              <div className="circle"></div>
+            </div>
+            <div className="gap-patch">
+              <div className="circle"></div>
+            </div>
+            <div className="circle-clipper right">
+              <div className="circle"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   renderComments() {
     const { comments, match } = this.props;
     const { id: postId } = match.params;
     if (comments && comments[postId]) {
-      const commentsNodes = comments[postId].reverse().map(({ id, name, body, email }) => 
+      let commentsNodes = comments[postId].reverse().map(({ id, name, body, email }) => 
         <div className='comment z-depth-3' key={id}>
           <h5>{name}</h5>
           <span className='comment-email'>{email}</span>
           <p>{body}</p>
         </div>
       );
-      if (commentsNodes.length) {
-        const { addComment, fetchComments } = this.props;
-        return (
+      if (!commentsNodes.length) {
+        commentsNodes = (
           <div>
-            <section className='post-detail-comments'>
-              <CommentForm postId={postId} onSubmit={addComment} />
-              {commentsNodes}
-            </section>
-            <div className="divider"></div>
-            <div className='post-detail-load-button-container'>
-              <Button className='waves-effect waves-light' label='Load more comments' icon='expand_more'
-                onClick={() => fetchComments(postId)} />
-            </div>
+            <h5 className='comments-not-found'>No comments yet</h5>
           </div>
         );
       }
-      return <div>No comments was found</div>;
+      const { addComment, fetchComments } = this.props;
+      // Renders the comment form, as well as the
+      // button to fetch more comments
+      return (
+        <div>
+          <section className='post-detail-comments'>
+            <CommentForm postId={postId} onSubmit={addComment} />
+            {commentsNodes}
+          </section>
+          <div className="divider"></div>
+          <div className='post-detail-load-button-container'>
+            <Button className='waves-effect waves-light' label='Load more comments' icon='expand_more'
+              onClick={() => fetchComments(postId)} />
+          </div>
+        </div>
+      );
     }
-    return <div>Loading comments...</div>;
+    return this.renderCommentsLoadingSpinner();
   }
   
   render() {
@@ -59,7 +137,7 @@ class PostDetail extends Component {
       const { title, body, userId } = post;
       return (
         <section className='post-detail container'>
-          <h1>{title}</h1>
+          <h1 className='post-detail-title'>{title}</h1>
           <p className='flow-text'>{userId}</p>
           <p className='post-content flow-text'>{body}</p>
           <div className="divider"></div>
@@ -67,7 +145,7 @@ class PostDetail extends Component {
         </section>
       );
     } else {
-      return <div>Loading ...</div>
+      return this.renderPostDetailsMock();
     }
   }
 }

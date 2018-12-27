@@ -1,7 +1,7 @@
 .post-detail {
   max-width: 800px !important;
 
-  h1 {
+  .post-detail-title {
     font-size: 2.3rem;
     font-weight: bold;
     max-width: 85%;
@@ -32,11 +32,63 @@
         font-size: 1rem;
       }
     }
+
+    .comments-not-found {
+      margin-top: 50px;
+      font-weight: 100;
+    }
   }
 
   .post-detail-load-button-container {
     text-align: center;
     margin-bottom: 40px;
+  }
+
+  .comments-load-spinner-container {
+    text-align: center;
+  }
+
+  .post-detail-mock {
+    margin-top: 50px;
+
+    .progress {
+      background-color: #fffebd;
+      .indeterminate {
+        background-color: #c1bf9c;
+      }
+    }
+
+    .post-detail-title {
+      max-width: 80%;
+
+      .progress {
+        height: 18px;
+      }
+    }
+    .post-content {
+      margin-top: 60px;
+
+      .progress {
+        height: 12px;
+      }
+    }
+
+    .comments-mock {
+      padding: 20px;
+      border-radius: 10px;
+      height: 300px;
+
+      .progress {
+        height: 15px;
+        margin-bottom: 40px;
+
+        &:first-child {
+          height: 20px;
+          max-width: 60%;
+          margin-bottom: 60px;
+        }
+      }
+    }
   }
 }
 

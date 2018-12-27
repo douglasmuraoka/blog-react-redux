@@ -13,7 +13,7 @@ afterEach(() => {
 
 it('should render loading when post is not loaded', () => {
   wrapped = mount(<Root><PostDetail match={{ params: { id: 1 } }} /></Root>);
-  expect(wrapped.render().text()).toContain('Loading ...');
+  expect(wrapped.find('.post-detail-mock')).toHaveLength(1);
 });
 
 it('should render post details', () => {
@@ -121,8 +121,7 @@ it('should render the comments loading state', () => {
     }
   };
   wrapped = mount(<Root initialState={initialState}><PostDetail match={{ params: { id: 1 } }} /></Root>);
-  const renderedContent = wrapped.render().text();
-  expect(renderedContent).toContain('Loading comments');
+  expect(wrapped.find('.comments-load-spinner-container')).toHaveLength(1);
 });
 
 it('should render the comments empty state', () => {
@@ -136,7 +135,7 @@ it('should render the comments empty state', () => {
   };
   wrapped = mount(<Root initialState={initialState}><PostDetail match={{ params: { id: 1 } }} /></Root>);
   const renderedContent = wrapped.render().text();
-  expect(renderedContent).toContain('No comments was found');
+  expect(renderedContent).toContain('No comments yet');
 });
 
 it('should render a CommentForm', () => {

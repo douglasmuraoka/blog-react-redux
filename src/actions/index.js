@@ -102,6 +102,7 @@ export const addComment = comment => {
   };
   delete comment.email;
   comment.author = loggedUser;
+  comment.createdAt = new Date().toISOString();
   return {
     type: types.ADD_COMMENT,
     payload: axios.post(`${SERVER_URL}/comments`, comment).catch(e => ({ error: e }))

@@ -60,11 +60,11 @@ class PostList extends Component {
     oldestPostDate = posts[posts.length - 1].createdAt;
 
     return posts.map(post => {
-      const { id, author, title, body } = post;
+      const { id, author, title, body, imageUrl } = post;
 
       // FIXME: get image for each post
       return (
-        <Parallax key={id} className='post' imgSrc='https://materializecss.com/images/parallax1.jpg'>
+        <Parallax key={id} className='post' imgSrc={imageUrl}>
           <div className='post-title-container'>
             <Link className='post-title' to={`/posts/${id}`}>{title}</Link>
             <p className='post-author'>by {author.name}</p>

@@ -180,3 +180,16 @@ it('should render a loading spinner when loading more comments', done => {
     done();
   });
 });
+
+it('should render an error message when received from store state', () => {
+  const initialState = {
+    posts: {
+      1: { id: 1, author: { id: 1 }, title: 'Post #1', body: 'foo'}
+    },
+    comments: {
+      error: new Error('foo')
+    }
+  };
+  wrapped = mount(<Root initialState={initialState}><PostDetail match={{ params: { id: 1 }}} /></Root>);
+  expect(wrapped.find('.post-detail-error-message').render().text()).toBe('Error while loading comments')
+});

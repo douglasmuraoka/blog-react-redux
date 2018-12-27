@@ -27,7 +27,7 @@ export const fetchPosts = createdAtMaxValue => {
   }
   return {
     type: types.FETCH_POSTS,
-    payload: axios.get(`${SERVER_URL}/posts?${query}`)
+    payload: axios.get(`${SERVER_URL}/posts?${query}`).catch(e => ({ error: e }))
   }
 };
 
@@ -38,7 +38,7 @@ export const fetchPosts = createdAtMaxValue => {
  */
 export const fetchPost = id => ({
   type: types.FETCH_POST,
-  payload: axios.get(`${SERVER_URL}/posts/${id}`)
+  payload: axios.get(`${SERVER_URL}/posts/${id}`).catch(e => ({ error: e }))
 });
 
 /**
@@ -69,7 +69,7 @@ export const fetchComments = (id, createdAtMaxValue) => {
           response
         });
       }).catch(reject);
-    })
+    }).catch(e => ({ error: e }))
   };
 };
 
@@ -102,6 +102,6 @@ export const addComment = comment => {
   comment.author = loggedUser;
   return {
     type: types.ADD_COMMENT,
-    payload: axios.post(`${SERVER_URL}/comments`, comment)
+    payload: axios.post(`${SERVER_URL}/comments`, comment).catch(e => ({ error: e }))
   };
 };

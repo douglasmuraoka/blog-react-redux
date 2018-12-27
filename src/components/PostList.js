@@ -121,7 +121,12 @@ class PostList extends Component {
   }
 
   render() {
-    if (!this.props.posts) {
+    const { posts, error } = this.props;
+    if (error) {
+      // This should be handled by the ErrorBoundary component
+      throw new Error(error);
+    }
+    if (!posts) {
       return (
         <section className='container'>
           <div className='postsContainer'>
@@ -142,7 +147,10 @@ class PostList extends Component {
 }
 
 const mapStateToProps = ({ posts }) => {
-  return ({ posts });
+  return ({
+    posts,
+    error: posts && posts.error
+  });
 }
 
 PostList.propTypes = {

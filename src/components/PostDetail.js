@@ -151,12 +151,20 @@ class PostDetail extends Component {
           </div>
         </div>
       );
+    } else if (comments && comments.error) {
+      return (
+        <h6 className='post-detail-error-message'>Error while loading comments</h6>
+      );
     }
     return <LoadingSpinner />;
   }
   
   render() {
-    const { post } = this.props;
+    const { post, error } = this.props;
+    if (error) {
+      // This should be handled by the ErrorBoundary component
+      throw new Error(error);
+    }
     if (post) {
       const { title, body, author } = post;
       const contentParagraphs = body.split('\n').map((paragraph, i) => (
@@ -186,7 +194,8 @@ class PostDetail extends Component {
 const mapStateToProps = ({ posts, comments }, ownProps) => {
   return {
     post: posts && posts[ownProps.match.params.id],
-    comments
+    comments,
+    error: posts && posts.error
   };
 };
 
